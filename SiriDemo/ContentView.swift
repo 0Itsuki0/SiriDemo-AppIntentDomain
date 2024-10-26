@@ -6,16 +6,28 @@
 //
 
 import SwiftUI
+import Photos
 
 struct ContentView: View {
+    @Environment(PhotoLibraryManager.self) private var library
+    @Environment(NavigationManager.self) private var navigation
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        @Bindable var navigation = navigation
+
+        NavigationStack(path: $navigation.path) {
+            Text("Assets Loaded: \(library.fetchResult.count)")
+                .foregroundStyle(.white)
+                .padding()
+                .background(RoundedRectangle(cornerRadius: 16).fill(.black))
+            ThumbnailCollectionView()
         }
-        .padding()
+//        .navigationDestination(item: $navigation.asset, destination: { asset in
+//            AssetView(asset: asset)
+//        })
+        .ignoresSafeArea()
+        .navigationBarHidden(true)
+        .statusBar(hidden: true)
     }
 }
 
